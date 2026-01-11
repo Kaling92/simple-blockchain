@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Simple Blockchain UI</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Simple Blockchain UI</h1>
+
+    <section>
+      <button id="mineBtn">Mine a block</button>
+      <button id="refreshChain">Refresh Chain</button>
+      <button id="resolveBtn">Resolve Conflicts</button>
+    </section>
+
+    <section>
+      <h2>Create Transaction</h2>
+      <form id="txForm">
+        <input id="sender" placeholder="sender" required />
+        <input id="recipient" placeholder="recipient" required />
+        <input id="amount" placeholder="amount" type="number" required />
+        <button type="submit">Create Transaction</button>
+      </form>
+    </section>
+
+    <section>
+      <h2>Register Nodes</h2>
+      <form id="nodesForm">
+        <input id="nodes" placeholder="comma-separated nodes (http://host:port)" required />
+        <button type="submit">Register</button>
+      </form>
+    </section>
+
+    <section>
+      <h2>Nodes</h2>
+      <div id="nodesList">-</div>
+    </section>
+
+    <section>
+      <h2>Chain</h2>
+      <pre id="chain">Loading...</pre>
+    </section>
+
+    <section>
+      <div id="message" class="message"></div>
+    </section>
+  </div>
+  <script src="/static/app.js"></script>
+</body>
+</html>
