@@ -10,8 +10,8 @@ class Blockchain:
         self.current_transactions = []
         self.nodes = set()
 
-        # Create the genesis block
-        self.new_block(previous_hash='1', proof=100)
+        # Create the genesis block with pow_hash for the first block
+        self.new_block(previous_hash='1', proof=100, pow_hash='genesis')
 
     def register_node(self, address):
         """
@@ -88,12 +88,13 @@ class Blockchain:
             return True
 
         return False
-    def new_block(self, proof, previous_hash=None):
+    def new_block(self, proof, previous_hash=None, pow_hash=None):
         """
         Create a new Block in the Blockchain
 
         :param proof: <int> The proof given by the Proof of Work algorithm
         :param previous_hash: (Optional) <str> Hash of previous Block
+        :param pow_hash: (Optional) <str> The PoW hash that was solved
         :return: <dict> New Block
         """
         block = {
@@ -102,6 +103,7 @@ class Blockchain:
             'transactions': self.current_transactions,
             'proof': proof,
             'previous_hash': previous_hash or self.hash(self.chain[-1]),
+            'pow_hash': pow_hash,
         }
 
         # Reset the current list of transactions

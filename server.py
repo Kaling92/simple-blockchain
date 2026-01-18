@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request, send_from_directory
 from uuid import uuid4
 from blockchain import Blockchain
+import hashlib
 
 # Instantiate our Node
 app = Flask(__name__)
@@ -18,6 +19,10 @@ def mine():
     last_proof = last_block['proof']
     proof = blockchain.proof_of_work(last_proof)
 
+    # Compute the PoW hash for reference (what was actually checked to validate)
+    pow_guess = f'{last_proof}{proof}'.encode()
+    pow_hash = hashlib.sha256(pow_guess).hexdigest()
+
     # We must receive a reward for finding the proof.
     # The sender is "0" to signify that this node has mined a new coin.
     blockchain.new_transaction(
@@ -28,7 +33,7 @@ def mine():
 
     # Forge the new Block by adding it to the chain
     previous_hash = blockchain.hash(last_block)
-    block = blockchain.new_block(proof, previous_hash)
+    block = blockchain.new_block(proof, previous_hash, pow_hash)
 
     response = {
         'message': "New Block Forged",
@@ -36,6 +41,7 @@ def mine():
         'transactions': block['transactions'],
         'proof': block['proof'],
         'previous_hash': block['previous_hash'],
+        'pow_hash': block['pow_hash'],
     }
     return jsonify(response), 200
 
